@@ -7,10 +7,7 @@ let category = document.querySelector('#cat');
 
 // Listen for Domcontentloaded
 
-document.addEventListener('DOMContentLoaded', create)
-
-function create()
-{
+document.addEventListener('DOMContentLoaded', ()=>{
   axios.get("http://localhost:4000/expense/get-expense")
   .then(({data})=> {
                                         // console.log(data);
@@ -52,7 +49,7 @@ function create()
               myForm.after(div);
   }
   }).catch(err=> console.error(err))
-  }
+  })
   
 
 // Listen for add expense
@@ -64,48 +61,37 @@ function onSubmit(e)
       alert('Please enter all fields');
     }
     else{
-        
+        alert('Details Successfully Saved!');
         const details = {
             Amount: amount.value,
             Description: description.value,
             Category: category.value,
         };
-            axios.post("http://localhost:4000/expense/add-expense", details).
-            then(({data})=> {
-                const ID =data.Success.id
-                // console.log(data.Success.id)
-                            addonedetail(ID);
-                            alert('Details Successfully Saved!');
-                        })
-             .catch((err)=>{
-                            console.error(err);
-                            alert("Duplicate Entry Found, Please Register Again!")});
-}
- }
- async function addonedetail(ID){
- 
-    try{
-        const {data}= await axios.get(`http://localhost:4000/expense/getone/${ID}`);
-
+       
+        // localStorage.setItem(amount.value, JSON.stringify(details));
+        // localStorage.setItem(amount.value, description.value);
+        
+        // Lets Scale the app to more users
         let div = document.createElement('div');
-              // Creating a Delete Button
-        div.className= "new-div";
+        // Creating a Delete Button
+        div.className=" new-div";
         let deleteButton = document.createElement("button");
-        deleteButton.setAttribute('id', data.data.id);
+        deleteButton.setAttribute('id', amount.value);
         deleteButton.textContent="Delete";
         deleteButton.addEventListener('click', onDelete);
 
-        div.appendChild(document.createTextNode(data.data.amount));
-        div.appendChild(document.createTextNode("🔶" + data.data.category +"🔶"));
-        div.appendChild(document.createTextNode(data.data.description+ " "));
+        div.appendChild(document.createTextNode(amount.value));
+        div.appendChild(document.createTextNode("🔶" + description.value +"🔶"));
+        div.appendChild(document.createTextNode(category.value + " "));
         
         div.style.fontWeight= "bold";
         div.style.textAlign= "center";
         div.style.color= "brown";
-
+        
         deleteButton.style.backgroundColor="red";
         deleteButton.style.color="white";
         deleteButton.style.borderColor="red"
+         // Add an Delete button to the div
         div.appendChild(deleteButton);
 
         // Add an Edit button to the div
@@ -119,11 +105,14 @@ function onSubmit(e)
         editButton.style.borderColor="green"
 
         myForm.after(div);
-    }
-    catch(err)
-    {
-        console.log(err);
-    }
+
+        axios.post("http://localhost:4000/expense/add-expense", details).
+        then(res=> console.log(res.data))
+         .catch((err)=>{
+           console.error(err);
+         alert("Duplicate Entry Found, Please Register Again!")});
+
+}
  }
  
 // DELETE BUTTON FUNCTIONALITY

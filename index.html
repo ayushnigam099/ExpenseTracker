@@ -19,7 +19,7 @@
         <h6 class="text-center">HAVE A TRACK ON YOUR EVERYDAY EXPENDITURE!</h6>
         <hr>
         <label for="amount" class="d-block">Amount:</label>
-        <input type="number" id="amt" name="amount" class="form-control mb-2" placeholder="Enter the amount">
+        <input type="number" id="amt" name="amount" class="form-control mb-2" placeholder="Enter the amount" step="0.01">
 
         <label for="description" class="d-block">Description:</label>
         <input type="text" class="form-control mb-2" id="des" name="description" placeholder="Enter the description">
@@ -36,6 +36,7 @@
     </form>
 
     <!-- Include Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <!-- My custom JavaScript file -->
     <script src="script.js"></script>
